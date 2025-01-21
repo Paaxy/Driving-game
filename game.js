@@ -2,9 +2,12 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
-// Set canvas size to fit the screen
+// Ensure the canvas is properly sized
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
+
+// Log canvas size for debugging
+console.log(`Canvas size: ${canvas.width}x${canvas.height}`);
 
 // Define the car object
 let car = {
