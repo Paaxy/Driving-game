@@ -6,11 +6,7 @@ const ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-// Load car image
-const carImage = new Image();
-carImage.src = 'https://upload.wikimedia.org/wikipedia/commons/5/55/Car_icon.svg'; // Use your own image URL
-
-// Define the car object
+// Define the car object (Now using a simple rectangle for the car)
 let car = {
     x: canvas.width / 2 - 50, // Center the car horizontally
     y: canvas.height - 150,   // Start at the bottom
@@ -25,24 +21,19 @@ let car = {
 let obstacles = [];
 let obstacleSpeed = 2;
 
-// Make sure the car image is loaded before drawing it
-carImage.onload = function() {
-    // Start the game loop once the image is loaded
-    updateGameArea();
-};
-
-// Draw the car
+// Draw the car as a rectangle
 function drawCar() {
-    ctx.drawImage(carImage, car.x, car.y, car.width, car.height);
+    ctx.fillStyle = 'red';  // Car color
+    ctx.fillRect(car.x, car.y, car.width, car.height);
 }
 
-// Draw a gradient sky
+// Draw a gradient sky (background)
 function drawBackground() {
     const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
     gradient.addColorStop(0, "#87CEEB"); // Light blue for sky
     gradient.addColorStop(1, "#4682B4"); // Dark blue for sky towards bottom
     ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillRect(0, 0, canvas.width, canvas.height);  // Draw the sky
 }
 
 // Draw the road
