@@ -6,12 +6,15 @@ const ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-// Define the car object (Now using a simple rectangle for the car)
+// Log canvas size for debugging
+console.log(`Canvas size: ${canvas.width}x${canvas.height}`);
+
+// Define the car object
 let car = {
-    x: canvas.width / 2 - 50, // Center the car horizontally
+    x: canvas.width / 2 - 25, // Center the car horizontally
     y: canvas.height - 150,   // Start at the bottom
-    width: 100,
-    height: 50,
+    width: 50,
+    height: 100,
     speed: 5,
     dx: 0, // horizontal speed
     dy: 0, // vertical speed
@@ -21,49 +24,37 @@ let car = {
 let obstacles = [];
 let obstacleSpeed = 2;
 
-// Draw the car as a rectangle
+// Draw the car
 function drawCar() {
-    ctx.fillStyle = 'red';  // Car color
+    ctx.fillStyle = 'red';
     ctx.fillRect(car.x, car.y, car.width, car.height);
 }
 
-// Draw a gradient sky (background)
-function drawBackground() {
-    const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-    gradient.addColorStop(0, "#87CEEB"); // Light blue for sky
-    gradient.addColorStop(1, "#4682B4"); // Dark blue for sky towards bottom
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);  // Draw the sky
-}
-
-// Draw the road
+// Draw the road lines
 function drawRoad() {
-    ctx.fillStyle = "#555";
-    ctx.fillRect(0, canvas.height - 200, canvas.width, 200); // Road at the bottom
-
-    // Draw dashed lane markings
     ctx.strokeStyle = 'white';
-    ctx.setLineDash([20, 30]);  // Dashed lines
     ctx.lineWidth = 5;
-    ctx.beginPath();
-    ctx.moveTo(canvas.width / 2, canvas.height - 200);
-    ctx.lineTo(canvas.width / 2, canvas.height);
-    ctx.stroke();
-    ctx.setLineDash([]); // Reset the line dash
+    let lineX = canvas.width / 2 - 2.5;  // Road line at center
+    for (let i = 0; i < canvas.height; i += 30) {
+        ctx.beginPath();
+        ctx.moveTo(lineX, i);
+        ctx.lineTo(lineX, i + 15);
+        ctx.stroke();
+    }
 }
 
 // Generate obstacles
 function createObstacle() {
-    const size = Math.random() * (60 - 40) + 40; // Random size for obstacles
+    const size = Math.random() * (50 - 30) + 30; // Random size for obstacles
     const x = Math.random() * (canvas.width - size); // Random horizontal position
     const y = -size; // Start off-screen
-    obstacles.push({ x, y, width: size, height: size, color: getRandomColor() });
+    obstacles.push({ x, y, width: size, height: size });
 }
 
 // Draw the obstacles
 function drawObstacles() {
+    ctx.fillStyle = 'blue';
     obstacles.forEach((obstacle, index) => {
-        ctx.fillStyle = obstacle.color;
         ctx.fillRect(obstacle.x, obstacle.y, obstacle.width, obstacle.height);
     });
 }
@@ -107,26 +98,15 @@ function moveCar() {
 
 // Reset the game after a collision
 function resetGame() {
-    car.x = canvas.width / 2 - 50;
+    car.x = canvas.width / 2 - 25;
     car.y = canvas.height - 150;
     obstacles = [];
-}
-
-// Get a random color for obstacles
-function getRandomColor() {
-    const letters = '0123456789ABCDEF';
-    let color = '#';
-    for (let i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
 }
 
 // Update the game area
 function updateGameArea() {
     ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
-    drawBackground(); // Draw the gradient sky background
-    drawRoad(); // Draw the road
+    drawRoad(); // Draw the road lines
     drawCar(); // Draw the car
     drawObstacles(); // Draw obstacles
     moveObstacles(); // Move obstacles
@@ -181,3 +161,6 @@ document.querySelectorAll('.control-button').forEach(button => {
 
 // Create a new obstacle every 2 seconds
 setInterval(createObstacle, 2000);
+
+// Start the game loop
+updateGameArea();
