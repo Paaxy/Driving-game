@@ -25,6 +25,12 @@ let car = {
 let obstacles = [];
 let obstacleSpeed = 2;
 
+// Make sure the car image is loaded before drawing it
+carImage.onload = function() {
+    // Start the game loop once the image is loaded
+    updateGameArea();
+};
+
 // Draw the car
 function drawCar() {
     ctx.drawImage(carImage, car.x, car.y, car.width, car.height);
@@ -184,6 +190,3 @@ document.querySelectorAll('.control-button').forEach(button => {
 
 // Create a new obstacle every 2 seconds
 setInterval(createObstacle, 2000);
-
-// Start the game loop
-updateGameArea();
