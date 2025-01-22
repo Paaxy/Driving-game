@@ -115,32 +115,27 @@ function updateGameArea() {
     requestAnimationFrame(updateGameArea); // Keep updating
 }
 
-// Handle key presses for car movement
-function keyDownHandler(e) {
-    if (e.key === "ArrowLeft") {
-        car.dx = -car.speed; // Move left
-    } else if (e.key === "ArrowRight") {
-        car.dx = car.speed; // Move right
-    } else if (e.key === "ArrowUp") {
-        car.dy = -car.speed; // Move forward (up)
-    } else if (e.key === "ArrowDown") {
-        car.dy = car.speed; // Move backward (down)
-    }
-}
+// Event listeners for touch controls
+document.getElementById('left').addEventListener('touchstart', () => {
+    car.dx = -car.speed; // Move left
+});
+document.getElementById('right').addEventListener('touchstart', () => {
+    car.dx = car.speed; // Move right
+});
+document.getElementById('up').addEventListener('touchstart', () => {
+    car.dy = -car.speed; // Move forward (up)
+});
+document.getElementById('down').addEventListener('touchstart', () => {
+    car.dy = car.speed; // Move backward (down)
+});
 
-// Handle key release to stop the car
-function keyUpHandler(e) {
-    if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
+// Stop car movement when touch ends
+document.querySelectorAll('.control-button').forEach(button => {
+    button.addEventListener('touchend', () => {
         car.dx = 0; // Stop horizontal movement
-    }
-    if (e.key === "ArrowUp" || e.key === "ArrowDown") {
         car.dy = 0; // Stop vertical movement
-    }
-}
-
-// Add event listeners for keydown and keyup
-document.addEventListener('keydown', keyDownHandler);
-document.addEventListener('keyup', keyUpHandler);
+    });
+});
 
 // Create a new obstacle every 2 seconds
 setInterval(createObstacle, 2000);
