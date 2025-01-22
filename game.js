@@ -115,7 +115,29 @@ function updateGameArea() {
     requestAnimationFrame(updateGameArea); // Keep updating
 }
 
-// Event listeners for touch controls
+// Event listeners for desktop keyboard controls
+document.addEventListener('keydown', (e) => {
+    if (e.key === "ArrowLeft") {
+        car.dx = -car.speed; // Move left
+    } else if (e.key === "ArrowRight") {
+        car.dx = car.speed; // Move right
+    } else if (e.key === "ArrowUp") {
+        car.dy = -car.speed; // Move forward (up)
+    } else if (e.key === "ArrowDown") {
+        car.dy = car.speed; // Move backward (down)
+    }
+});
+
+document.addEventListener('keyup', (e) => {
+    if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
+        car.dx = 0; // Stop horizontal movement
+    }
+    if (e.key === "ArrowUp" || e.key === "ArrowDown") {
+        car.dy = 0; // Stop vertical movement
+    }
+});
+
+// Event listeners for touch controls (for mobile)
 document.getElementById('left').addEventListener('touchstart', () => {
     car.dx = -car.speed; // Move left
 });
@@ -129,7 +151,7 @@ document.getElementById('down').addEventListener('touchstart', () => {
     car.dy = car.speed; // Move backward (down)
 });
 
-// Stop car movement when touch ends
+// Stop car movement when touch ends (for mobile)
 document.querySelectorAll('.control-button').forEach(button => {
     button.addEventListener('touchend', () => {
         car.dx = 0; // Stop horizontal movement
