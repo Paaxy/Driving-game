@@ -10,6 +10,15 @@ canvas {
 
 #mobile-controls {
   position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+}
+
+#action-buttons {
+  position: fixed;
   bottom: 10px;
   left: 50%;
   transform: translateX(-50%);
@@ -20,9 +29,14 @@ canvas {
 button {
   width: 60px;
   height: 60px;
-  font-size: 20px;
+  font-size: 16px;
   background: #333;
   color: white;
   border: none;
   border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #555;
 }
