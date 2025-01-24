@@ -3,8 +3,11 @@ const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
 // Ensure the canvas is properly sized
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+resizeCanvas();
 
 // Log canvas size for debugging
 console.log(`Canvas size: ${canvas.width}x${canvas.height}`);
@@ -54,7 +57,7 @@ function createObstacle() {
 // Draw the obstacles
 function drawObstacles() {
     ctx.fillStyle = 'blue';
-    obstacles.forEach((obstacle, index) => {
+    obstacles.forEach((obstacle) => {
         ctx.fillRect(obstacle.x, obstacle.y, obstacle.width, obstacle.height);
     });
 }
@@ -161,6 +164,19 @@ document.querySelectorAll('.control-button').forEach(button => {
 
 // Create a new obstacle every 2 seconds
 setInterval(createObstacle, 2000);
+
+// Fullscreen functionality
+const fullscreenBtn = document.getElementById('fullscreen-btn');
+fullscreenBtn.addEventListener('click', () => {
+    if (!document.fullscreenElement) {
+        canvas.requestFullscreen();
+    } else {
+        document.exitFullscreen();
+    }
+});
+
+// Resize canvas when entering or exiting fullscreen
+document.addEventListener('fullscreenchange', resizeCanvas);
 
 // Start the game loop
 updateGameArea();
