@@ -4,9 +4,11 @@ const fullscreenButton = document.getElementById('fullscreen');
 const pauseButton = document.getElementById('pause');
 const controls = document.getElementById('mobile-controls');
 
+// Initial canvas dimensions
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
+// Game variables
 let car = { x: canvas.width / 2, y: canvas.height - 100, width: 50, height: 100, speed: 5 };
 let obstacles = [];
 let gameRunning = true;
@@ -19,6 +21,7 @@ function spawnObstacle() {
     width,
     height: 50,
     speed: 3 + Math.random() * 3,
+    color: `hsl(${Math.random() * 360}, 50%, 50%)`, // Random color
   });
 }
 
@@ -28,8 +31,8 @@ function drawCar() {
 }
 
 function drawObstacles() {
-  ctx.fillStyle = 'black';
   obstacles.forEach((obs) => {
+    ctx.fillStyle = obs.color; // Use the random color
     ctx.fillRect(obs.x, obs.y, obs.width, obs.height);
   });
 }
@@ -38,7 +41,7 @@ function updateObstacles() {
   obstacles.forEach((obs) => {
     obs.y += obs.speed;
   });
-  obstacles = obstacles.filter((obs) => obs.y < canvas.height);
+  obstacles = obstacles.filter((obs) => obs.y < canvas.height); // Remove off-screen obstacles
 }
 
 function checkCollision() {
@@ -54,6 +57,31 @@ function checkCollision() {
     }
   }
 }
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  car.x = canvas.width / 2; // Reposition car after resize
+  car.y = canvas.height - 150; // Reposition car after resize
+}
+
+// Fullscreen functionality
+fullscreenButton.addEventListener('click', () => {
+  const gameContainer = document.getElementById('game-container');
+  if (!document.fullscreenElement) {
+    gameContainer.requestFullscreen();
+    resizeCanvas();
+  } else {
+    document.exitFullscreen();
+    resizeCanvas();
+  }
+});
+
+// Pause functionality
+pauseButton.addEventListener('click', () => {
+  gameRunning = !gameRunning;
+  if (gameRunning) requestAnimationFrame(gameLoop);
+});
 
 function gameLoop() {
   if (!gameRunning) return;
@@ -88,25 +116,12 @@ function moveCar() {
   );
 }
 
-// Fullscreen functionality
-fullscreenButton.addEventListener('click', () => {
-  const gameContainer = document.getElementById('game-container');
-  if (!document.fullscreenElement) {
-    gameContainer.requestFullscreen();
-  } else {
-    document.exitFullscreen();
-  }
-});
-
-// Pause functionality
-pauseButton.addEventListener('click', () => {
-  gameRunning = !gameRunning;
-  if (gameRunning) requestAnimationFrame(gameLoop);
-});
-
 // Spawn obstacles
 setInterval(spawnObstacle, 1500);
 setInterval(moveCar, 16);
+
+// Adjust canvas size on resize
+window.addEventListener('resize', resizeCanvas);
 
 // Start game
 gameLoop();
