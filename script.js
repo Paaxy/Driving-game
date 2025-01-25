@@ -1,8 +1,8 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
-const controls = document.getElementById('mobile-controls');
 const fullscreenButton = document.getElementById('fullscreen');
 const pauseButton = document.getElementById('pause');
+const controls = document.getElementById('mobile-controls');
 
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
@@ -90,8 +90,9 @@ function moveCar() {
 
 // Fullscreen functionality
 fullscreenButton.addEventListener('click', () => {
+  const gameContainer = document.getElementById('game-container');
   if (!document.fullscreenElement) {
-    canvas.requestFullscreen();
+    gameContainer.requestFullscreen();
   } else {
     document.exitFullscreen();
   }
